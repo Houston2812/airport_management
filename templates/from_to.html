@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flights</title>
+</head>
+<style>
+    body{
+        font-size: 24px;
+    }
+    td{
+        border: 1px solid silver;
+    }
+</style>
+<body>
+        {% if not login %}
+        <a href="{{ url_for('login') }}">Login</a>
+        {% else %}
+            {{ login }}
+            <a href="{{ url_for('end_session') }}">Log Out</a>
+            <a href="{{ url_for('add_new') }}">Add Flight</a>
+        {% endif %}
+        <form method="POST" action="/">
+
+            <input  type="text" name="from" placeholder="From" autofocus="">
+            <br>
+            <input type="text" name="to" placeholder="To" autofocus="">
+            <br>
+            <button >Get Flights</button>
+        </form>
+        <br><br>
+        {% if is_data %}
+        <table style="border-collapse: collapse">
+            {% for i in is_data['flights'] %}
+                <td > {{ i['id'] }}</td>
+
+                <td>{{ i['from_city'] }}</td>
+                <td>{{ i['date_of_departure'] }}</td>
+
+                 <td>{{ i['to_city'] }}</td>
+                <td>{{ i['date_of_arrival'] }}</td>
+                <td>{{ i['airplane_info'] }}</td>
+                <td>{{ i['pass_num'] }}</td>
+                {% if login %}
+
+                <form method="post" action={{ "/delete/" + i['id'] }}>
+                   <td><input type="submit" name="delete" value="Delete"></td>
+                    </form>
+                  <td><button>Update</button></td>
+                {% endif%}
+            {% endfor %}
+        </table>
+        {% endif %}
+</body>
+</html>
